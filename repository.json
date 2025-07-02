@@ -1,0 +1,6 @@
+{
+  "name": "Bresser Wifi-Weatherstation HomeAssistant Add-on",
+  "description": "Addon to get data from a Bresser Wifi-Weatherstation locally",
+  "url": "https://github.com/Bewo/Bresser-Weatherstation",
+  "maintainer": "bewo"
+}
