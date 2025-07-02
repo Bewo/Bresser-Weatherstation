@@ -1,0 +1,24 @@
+name: "Bresser Weatherstation Server"
+version: "0.1"
+slug: "weatherstation"
+description: "Webserver für Wetterstationsdaten und Übermittlung via MQTT"
+arch:
+  - amd64
+  - armv7
+  - aarch64
+startup: application
+boot: auto
+ingress: false
+host_network: true
+options:
+  mqtt_host: "homeassistant.local"
+  mqtt_port: 1883
+  mqtt_username: "mqtt_user"
+  mqtt_password: "mqtt_pass"
+  mqtt_topic_prefix: "bresser-weatherstation"
+schema:
+  mqtt_host: str
+  mqtt_port: int
+  mqtt_username: str
+  mqtt_password: str
+  mqtt_topic_prefix: str
