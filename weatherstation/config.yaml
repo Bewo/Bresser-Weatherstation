@@ -1,5 +1,5 @@
 name: "Bresser Weatherstation Server"
-version: "0.1"
+version: "0.1.1"
 slug: "weatherstation"
 description: "Webserver für Wetterstationsdaten und Übermittlung via MQTT"
 arch:
