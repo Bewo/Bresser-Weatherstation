@@ -1,14 +1,14 @@
 ARG BUILD_FROM
 FROM ${BUILD_FROM}
 
-# Python und benötigte Pakete installieren
+# Python und virtuelle Umgebung installieren
 RUN apk add --no-cache python3 py3-pip py3-virtualenv
 
-# Virtuelle Umgebung anlegen und aktivieren
+# Virtuelle Umgebung anlegen
 RUN python3 -m venv /opt/venv
 
 # Abhängigkeiten in der venv installieren
-RUN /opt/venv/bin/pip install --no-cache-dir bottle paho-mqtt bashio
+RUN /opt/venv/bin/pip install --no-cache-dir bottle paho-mqtt
 
 # Dateien ins Image kopieren
 COPY weather_server.py /weather_server.py
