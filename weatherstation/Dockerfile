@@ -13,8 +13,6 @@ RUN /opt/venv/bin/pip install --no-cache-dir bottle paho-mqtt
 # Dateien ins Image kopieren
 COPY weather_server.py /weather_server.py
 COPY run.sh /run.sh
+COPY etc /etc
 
-RUN chmod a+x /run.sh
-
-# Startkommando
-CMD [ "/run.sh" ]
+RUN chmod a+x /run.sh /etc/services.d/weatherstation/run
