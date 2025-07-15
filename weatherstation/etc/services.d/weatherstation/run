@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv bashio
+echo "[INFO] Starte Weatherstation-Server..."
+source /opt/venv/bin/activate
+python3 /weather_server.py
