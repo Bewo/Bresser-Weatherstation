@@ -1,2 +1,3 @@
 #!/usr/bin/with-contenv bashio
-python3 /weather_server.py
+echo "Start Server for Bresser Weatherstation"
+/opt/venv/bin/python /weather_server.py
