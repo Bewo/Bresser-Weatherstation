@@ -1,18 +1,19 @@
 ARG BUILD_FROM
-FROM ${BUILD_FROM}
+FROM $BUILD_FROM
 
-# Python und virtuelle Umgebung installieren
+# Python & Abhängigkeiten installieren
 RUN apk add --no-cache python3 py3-pip py3-virtualenv
 
-# Virtuelle Umgebung anlegen
+# Virtuelle Umgebung
 RUN python3 -m venv /opt/venv
-
-# Abhängigkeiten in der venv installieren
 RUN /opt/venv/bin/pip install --no-cache-dir bottle paho-mqtt
 
-# Dateien ins Image kopieren
-COPY weather_server.py /weather_server.py
-COPY run.sh /run.sh
-COPY etc /etc
+# Skripte & Dienste ins Image kopieren
+COPY run.sh /
+COPY weather_server.py /
 
-RUN chmod a+x /run.sh /etc/services.d/weatherstation/run
+# Dienste ausführbar machen
+RUN chmod a+x /run.sh
+RUN chmod a+x /weather_server.py
+
+CMD [ "/run.sh" ]
