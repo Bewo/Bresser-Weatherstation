@@ -1,14 +1,13 @@
-from bottle import request, route, run
-import datetime, json
+from bottle import request, response, route, run
+import datetime, json, os
 import paho.mqtt.client as mqtt
-import bashio
 
-# MQTT Konfiguration aus Add-on Optionen lesen
-MQTT_HOST = bashio.config('mqtt_host')
-MQTT_PORT = bashio.config('mqtt_port')
-MQTT_USER = bashio.config('mqtt_username')
-MQTT_PASS = bashio.config('mqtt_password')
-MQTT_TOPIC_PREFIX = bashio.config('mqtt_topic_prefix')
+# MQTT-Konfiguration über Umgebungsvariablen
+MQTT_HOST = os.getenv('MQTT_HOST', 'localhost')
+MQTT_PORT = int(os.getenv('MQTT_PORT', '1883'))
+MQTT_USER = os.getenv('MQTT_USER', '')
+MQTT_PASSWORD = os.getenv('MQTT_PASSWORD', '')
+MQTT_TOPIC = os.getenv('MQTT_TOPIC', 'weatherstation/data')
 
 current_data = {}
 
@@ -20,7 +19,7 @@ WIND_DIRS = [
 ]
 
 def deg_to_dir(deg):
-    return WIND_DIRS[round(int(deg)/22.5) % 16]
+    return WIND_DIRS[round(int(deg) / 22.5) % 16]
 
 def mph_to_kmh(mph):
     return round(float(mph) * 1.609344, 1)
@@ -37,9 +36,18 @@ def f_to_c(tempf):
 def min_to_hpa(pressuremin):
     return round(float(pressuremin) * 33.7685)
 
-# MQTT Client einrichten
-mqtt_client = mqtt.Client()
-mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
+def on_connect(client, userdata, flags, rc, properties=None):
+    print(f"[INFO] Verbunden mit MQTT Broker {MQTT_HOST}:{MQTT_PORT} mit Resultcode {rc}")
+
+# MQTT Client initialisieren
+mqtt_client = mqtt.Client(protocol=mqtt.MQTTv5)
+mqtt_client.on_connect = on_connect
+
+# Auth setzen falls angegeben
+if MQTT_USER and MQTT_PASSWORD:
+    mqtt_client.username_pw_set(MQTT_USER, MQTT_PASSWORD)
+
+# Verbindung aufbauen
 mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
 mqtt_client.loop_start()
 
@@ -52,23 +60,24 @@ def receive_data():
             "temperature_c": f_to_c(request.query.tempf),
             "humidity": int(request.query.humidity),
             "wind_speed_kmh": mph_to_kmh(request.query.windspeedmph),
-            "wind_direction_compass": deg_to_dir(request.query.winddir),
             "rain_mm": in_to_mm(request.query.rainin),
             "solar_radiation": float(request.query.solarradiation),
-            "uv": float(request.query.UV),
         })
 
-        # Daten einzeln als MQTT Topics publishen
-        for key, value in current_data.items():
-            topic = f"{MQTT_TOPIC_PREFIX}/{key}"
-            mqtt_client.publish(topic, str(value), retain=True)
+        # MQTT publish
+        mqtt_payload = json.dumps(current_data)
+        mqtt_client.publish(MQTT_TOPIC, mqtt_payload)
+        print(f"[INFO] Gesendet an MQTT: {mqtt_payload}")
 
         return 'OK'
+
     except Exception as e:
-        return str(e)
+        print(f"[ERROR] Fehler beim Verarbeiten der Anfrage: {e}")
+        return 'Fehler', 500
 
 @route('/data')
 def show_data():
+    response.content_type = 'application/json'
     return json.dumps(current_data)
 
 run(host='0.0.0.0', port=8000)
