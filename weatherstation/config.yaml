@@ -1,5 +1,5 @@
 name: "MQTT Bridge for Bresser Weatherstation"
-version: "0.1.6.1"
+version: "0.1.6.2"
 slug: "weatherstation"
 description: "Empfängt mittels Webserver Wetterdaten einer Bresser Wetterstation und veröffentlicht sie via MQTT"
 arch:
@@ -11,14 +11,14 @@ boot: auto
 init: false
 host_network: true
 options:
-  MQTT_HOST: "localhost"
-  MQTT_PORT: 1883
-  MQTT_USER: ""
-  MQTT_PASSWORD: ""
-  MQTT_TOPIC: "weatherstation/data"
+  mqtt_host: core-mosquitto
+  mqtt_port: 1883
+  mqtt_user: ha_mqtt
+  mqtt_password: ha_mqtt
+  mqtt_topic: wetterstation/data
 schema:
-  MQTT_HOST: str
-  MQTT_PORT: int
-  MQTT_USER: str
-  MQTT_PASSWORD: str
-  MQTT_TOPIC: str
+  mqtt_host: str
+  mqtt_port: int
+  mqtt_user: str
+  mqtt_password: str
+  mqtt_topic: str
