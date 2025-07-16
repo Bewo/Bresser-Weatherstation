@@ -67,6 +67,7 @@ def receive_data():
             "wind_geschwindigkeit_kmh": mph_to_kmh(request.query.windspeedmph),
             "wind_boeen_kmh": mph_to_kmh(request.query.windgustmph),
             "wind_richtung": deg_to_dir(request.query.winddir),
+            "wind_richtung_grad": int(request.query.winddir),
             "regen_live_mm": in_to_mm(request.query.rainin),
             "regen_heute_mm": in_to_mm(request.query.dailyrainin),
             "innen_temperatur": f_to_c(request.query.indoortempf),
