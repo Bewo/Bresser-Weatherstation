@@ -6,7 +6,7 @@ RUN apk add --no-cache python3 py3-pip py3-virtualenv
 
 # Virtuelle Umgebung
 RUN python3 -m venv /opt/venv
-RUN /opt/venv/bin/pip install --no-cache-dir bottle paho-mqtt
+RUN /opt/venv/bin/pip install --no-cache-dir bottle paho-mqtt bashio
 
 # Skripte & Dienste ins Image kopieren
 COPY run.sh /
