@@ -42,7 +42,7 @@ def on_connect(client, userdata, flags, rc, properties=None):
     print(f"[INFO] Verbunden mit MQTT Broker {MQTT_HOST}:{MQTT_PORT} mit Resultcode {rc}")
 
 # MQTT Client initialisieren
-mqtt_client = mqtt.Client(mqtt.Client.CallbackAPIVersion.VERSION2)
+mqtt_client = mqtt.Client(callback_api_version=5, protocol=mqtt.MQTTv5)
 mqtt_client.on_connect = on_connect
 
 # Auth setzen falls angegeben
