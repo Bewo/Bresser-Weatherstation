@@ -11,7 +11,6 @@ RUN /opt/venv/bin/pip install --no-cache-dir bottle paho-mqtt
 # Skripte & Dienste ins Image kopieren
 COPY run.sh /
 COPY weather_server.py /
-COPY ssl/ /ssl/
 
 # Dienste ausführbar machen
 RUN chmod a+x /run.sh
