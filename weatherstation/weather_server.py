@@ -1,15 +1,15 @@
 from bottle import request, response, route, run
 import datetime, json, os
 import paho.mqtt.client as mqtt
-import bashio
 
 # MQTT-Konfiguration über Umgebungsvariablen
-MQTT_HOST = bashio.config("mqtt_host")
-MQTT_PORT = int(bashio.config("mqtt_port"))
-MQTT_USER = bashio.config("mqtt_user")
-MQTT_PASSWORD = bashio.config("mqtt_password")
-MQTT_TOPIC = bashio.config("mqtt_topic")
+MQTT_HOST = os.getenv('MQTT_HOST', 'localhost')
+MQTT_PORT = int(os.getenv('MQTT_PORT', '1883'))
+MQTT_USER = os.getenv('MQTT_USER', '')
+MQTT_PASSWORD = os.getenv('MQTT_PASSWORD', '')
+MQTT_TOPIC = os.getenv('MQTT_TOPIC', 'wetterstation/data')
 
+print(f"Verbinde zu {MQTT_HOST}:{MQTT_PORT} mit User {MQTT_USER}…")
 
 current_data = {}
 
@@ -42,7 +42,7 @@ def on_connect(client, userdata, flags, rc, properties=None):
     print(f"[INFO] Verbunden mit MQTT Broker {MQTT_HOST}:{MQTT_PORT} mit Resultcode {rc}")
 
 # MQTT Client initialisieren
-mqtt_client = mqtt.Client(protocol=mqtt.MQTTv5)
+mqtt_client = mqttClient.Client(mqttClient.CallbackAPIVersion.VERSION2)
 mqtt_client.on_connect = on_connect
 
 # Auth setzen falls angegeben
