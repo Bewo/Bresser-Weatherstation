@@ -1,13 +1,15 @@
 from bottle import request, response, route, run
 import datetime, json, os
 import paho.mqtt.client as mqtt
+import bashio
 
 # MQTT-Konfiguration über Umgebungsvariablen
-MQTT_HOST = os.getenv('MQTT_HOST', 'localhost')
-MQTT_PORT = int(os.getenv('MQTT_PORT', '1883'))
-MQTT_USER = os.getenv('MQTT_USER', '')
-MQTT_PASSWORD = os.getenv('MQTT_PASSWORD', '')
-MQTT_TOPIC = os.getenv('MQTT_TOPIC', 'weatherstation/data')
+MQTT_HOST = bashio.config("mqtt_host")
+MQTT_PORT = int(bashio.config("mqtt_port"))
+MQTT_USER = bashio.config("mqtt_user")
+MQTT_PASSWORD = bashio.config("mqtt_password")
+MQTT_TOPIC = bashio.config("mqtt_topic")
+
 
 current_data = {}
 
