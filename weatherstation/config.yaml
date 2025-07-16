@@ -1,5 +1,5 @@
 name: "MQTT Bridge for Bresser Weatherstation"
-version: "0.1.6.2"
+version: "0.1.6.3"
 slug: "weatherstation"
 description: "Empfängt mittels Webserver Wetterdaten einer Bresser Wetterstation und veröffentlicht sie via MQTT"
 arch:
