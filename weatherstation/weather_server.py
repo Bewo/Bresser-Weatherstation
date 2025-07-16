@@ -80,4 +80,11 @@ def show_data():
     response.content_type = 'application/json'
     return json.dumps(current_data)
 
-run(host='0.0.0.0', port=8000)
+#run(host='0.0.0.0', port=8000)
+run(
+    host='0.0.0.0',
+    port=8000,
+    server='wsgiref',
+    certfile='/ssl/cert.pem',
+    keyfile='/ssl/key.pem'
+)
