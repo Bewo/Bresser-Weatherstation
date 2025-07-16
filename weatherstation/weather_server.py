@@ -55,13 +55,20 @@ mqtt_client.loop_start()
 def receive_data():
     try:
         current_data.update({
-            "timestamp": datetime.datetime.now().astimezone().replace(microsecond=0).isoformat(),
-            "pressure_hpa": min_to_hpa(request.query.baromin),
-            "temperature_c": f_to_c(request.query.tempf),
-            "humidity": int(request.query.humidity),
-            "wind_speed_kmh": mph_to_kmh(request.query.windspeedmph),
-            "rain_mm": in_to_mm(request.query.rainin),
-            "solar_radiation": float(request.query.solarradiation),
+            "zeitstempel": datetime.datetime.now().astimezone().replace(microsecond=0).isoformat(),
+            "aussen_temperatur": f_to_c(request.query.tempf),
+            "aussen_luftfeuchtigkeit": int(request.query.humidity),
+            "aussen_taupunkt": f_to_c(request.query.dewptf),
+            "luftdruck": min_to_hpa(request.query.baromin),
+            "solarstrahlung": float(request.query.solarradiation),
+            "uvindex": float(request.query.UV),
+            "wind_geschwindigkeit_kmh": mph_to_kmh(request.query.windspeedmph),
+            "wind_boeen_kmh": mph_to_kmh(request.query.windgustmph),
+            "wind_richtung": deg_to_dir(request.query.winddir),
+            "regen_live_mm": in_to_mm(request.query.rainin),
+            "regen_heute_mm": in_to_mm(request.query.dailyrainin),
+            "innen_temperatur": f_to_c(request.query.indoortempf),
+            "innen_luftfeuchtigkeit": int(request.query.indoorhumidity),
         })
 
         # MQTT publish
